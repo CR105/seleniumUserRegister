@@ -79,6 +79,7 @@ public class pom_userRegistration {
         	return true;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in set driver: " + e.toString());
 			return false;
 		}
@@ -90,25 +91,17 @@ public class pom_userRegistration {
 	 * @return boolean True is was passed, False is was failed.  
 	 */
 	public boolean setURL(String baseUrl){
-		
-//      String expectedTitle = "ForgeRock Access Management";
-//      String actualTitle = "";
-		
+				
         try {
         	driver.get(baseUrl);
 		  
         	WebDriverWait wait = new WebDriverWait(driver, 20);
         	wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("loginBaseLogo")));
 		
-//          actualTitle = driver.getTitle();        
-//          if (actualTitle.contentEquals(expectedTitle)){
-//              System.out.println("Test Passed!");
-//          } else {
-//              System.out.println("Test Failed");
-//          }
-          return true;
+        	return true;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in set URL: " + e.toString());
 			return false;
 		}
@@ -128,7 +121,7 @@ public class pom_userRegistration {
     		// Type Password
             driver.findElement(By.xpath("//*[@id=\'idToken2\']")).sendKeys(pass);
             
-            // Click logín button
+            // Click login button
             driver.findElement(By.xpath("//*[@id=\'loginButton_0\']")).click();
             
             WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -136,6 +129,7 @@ public class pom_userRegistration {
 			
         	return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in login: " + e.toString());
 			return false;
 		}
@@ -156,6 +150,7 @@ public class pom_userRegistration {
 			
         	return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in select admin: " + e.toString());
 			return false;
 		}
@@ -175,6 +170,7 @@ public class pom_userRegistration {
         	return true;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in manage users:" + e.toString());
 			return false;
 		}
@@ -217,6 +213,9 @@ public class pom_userRegistration {
 			driver.findElement(By.id("input-confirmPassword")).sendKeys(passWord);
 			driver.findElement(By.id("input-confirmPassword")).click();
 			
+			driver.findElement(By.id("input-password")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("input-confirmPassword")).sendKeys(Keys.TAB);
+			
 			// Send Data
 			driver.findElement(By.id("passwordSaveBtn")).click();
 			
@@ -225,6 +224,7 @@ public class pom_userRegistration {
 			
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in add new user: " + e.toString());
 			return false;
 		}		
@@ -239,12 +239,14 @@ public class pom_userRegistration {
 		
 		try {
 			// Back users list
-			driver.findElement(By.id("backBtn")).click();
-			
 			WebDriverWait wait = new WebDriverWait(driver, 20);
+			
+			driver.get("https://sabadell.catalyst.forgerock.org/admin/#resource/managed/user/list/");
+			
 	        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#managedViewTable_container > div.page-header > h1")));
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in back to list users: " + e.toString());
 			return false;
 		}
@@ -273,6 +275,7 @@ public class pom_userRegistration {
 			return true;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in search User: " + e.toString());
 			return false;
 		}
@@ -318,10 +321,42 @@ public class pom_userRegistration {
 	        driver.close();
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in logout: " + e.toString());
 			return false;
 		}
 		
+	}
+	
+	/**
+	 * Method to change phone number.
+	 * @param newpass
+	 * @return
+	 */
+	public boolean changePass(String newpass) {
+		try {
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			driver.findElement(By.cssSelector("#tabHeader_password > a")).click();
+			
+			driver.findElement(By.id("input-password")).sendKeys(newpass);
+			driver.findElement(By.id("input-confirmPassword")).sendKeys(newpass);
+			
+			driver.findElement(By.id("input-password")).sendKeys(Keys.TAB);
+			driver.findElement(By.id("input-confirmPassword")).sendKeys(Keys.TAB);
+
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#password > div:nth-child(2) > div:nth-child(1) > strong:nth-child(2)")));
+			
+			driver.findElement(By.id("passwordSaveBtn")).click();
+			
+			wait.until(ExpectedConditions.elementToBeClickable(By.id("0-root-userName")));
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("Exception in add new user: " + e.toString());
+			return false;
+		}
 	}
 	
 	/**
@@ -334,6 +369,7 @@ public class pom_userRegistration {
 			return true;
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("Exception in close: " + e.toString());
 			return false;
 		}
